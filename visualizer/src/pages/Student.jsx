@@ -20,6 +20,7 @@ import MindMap from "../components/MindMap";
 const Student = ({ userDocRef, uid }) => {
   const navigate = useNavigate();
   const modalRef = useRef();
+  const thing = useRef();
   const [visualization, setVisualization] = useState("list");
   const [assignments, setAssignments] = useState([
     { name: "Physics | Ch 5 HW 3", id: 1 },
@@ -30,20 +31,13 @@ const Student = ({ userDocRef, uid }) => {
   const [teachers, setTeachers] = useState([]);
   const [viewableTeachers, setViewableTeachers] = useState([]);
   const [viewableAssignments, setViewableAssignments] = useState([]);
+  const [state, setState] = useState();
 
-  // const navigate = useNavigate();
-
-  // onAuthStateChanged(auth, (user) => {
-  //   if (user) {
-  //     console.log("logged in!!!");
-  //     const uid = user.uid;
-  //   } else {
-  //     console.log(
-  //       "NOT LOGGED IN!!! SEND THIS FELLA BACK TO WHERE HE CAME FROM!!!!!!"
-  //     );
-  //     navigate("/login");
-  //   }
-  // });
+  useEffect(() => {
+    const height = thing.current.clientHeight;
+    const pageHeight = document.documentElement.clientHeight;
+    setState(height > pageHeight ? height : pageHeight);
+  });
 
   useEffect(() => {
     let currTeachers = [];
@@ -167,7 +161,7 @@ const Student = ({ userDocRef, uid }) => {
 
   return (
     <>
-      <div className="flex flex-col gap-10 p-5">
+      <div className="flex flex-col gap-10 p-5" ref={thing}>
         <h1 className="text-left font-bold text-7xl">Visualize</h1>
         <div className="flex flex-col lg:flex-row justify-between gap-5">
           <div className="bg-neutral-100 p-5 rounded-3xl flex flex-col gap-5">
@@ -224,7 +218,7 @@ const Student = ({ userDocRef, uid }) => {
                 MindMap
               </button>
             </div>
-            <div className="w-full h-full bg-neutral-300 p-5 rounded-3xl">
+            <div className="w-full h-full bg-neutral-100 p-5 rounded-3xl">
               {visualization === "list" && (
                 <List assignments={viewableAssignments} />
               )}
@@ -243,49 +237,50 @@ const Student = ({ userDocRef, uid }) => {
         <button onClick={logoutHandler} className="border rounded-2xl p-5">
           Log out
         </button>
-      </div>
-      {popupOpen && (
-        <div
-          onClick={closePopup}
-          className="absolute top-0 left-0 w-full h-screen bg-[rgba(0,0,0,0.5)] flex items-center justify-center"
-        >
+        {popupOpen && (
           <div
-            ref={modalRef}
-            className="w-1/2 h-1/2 bg-white rounded-2xl flex flex-col items-center p-5 gap-5"
+            onClick={closePopup}
+            className={`absolute top-0 left-0 w-full bg-[rgba(0,0,0,0.5)] flex items-center justify-center`}
+            style={{ height: state + "px" }}
           >
-            <div className="text-2xl w-full border-b text-center pb-2">
-              Teachers
-            </div>
-            <div className="flex flex-col gap-5 w-full">
-              {teachers.map((teacher) => (
-                <div
-                  key={teacher.id}
-                  className="w-full flex justify-between items-center border-b py-2 border-neutral-100"
-                >
-                  <span>
-                    {teacher.firstName} {teacher.lastName}
-                  </span>
-                  {viewableTeachers.includes(teacher) ? (
-                    <button
-                      className="p-2 rounded-2xl text-center hover:bg-neutral-200 transition-all"
-                      onClick={() => removeTeacherHandler(teacher.id)}
-                    >
-                      Remove
-                    </button>
-                  ) : (
-                    <button
-                      className="p-2 rounded-2xl text-center hover:bg-neutral-200 transition-all"
-                      onClick={() => addTeacherHandler(teacher.id)}
-                    >
-                      Add
-                    </button>
-                  )}
-                </div>
-              ))}
+            <div
+              ref={modalRef}
+              className="w-1/2 h-1/2 bg-white rounded-2xl flex flex-col items-center p-5 gap-5"
+            >
+              <div className="text-2xl w-full border-b text-center pb-2">
+                Teachers
+              </div>
+              <div className="flex flex-col gap-5 w-full">
+                {teachers.map((teacher) => (
+                  <div
+                    key={teacher.id}
+                    className="w-full flex justify-between items-center border-b py-2 border-neutral-100"
+                  >
+                    <span>
+                      {teacher.firstName} {teacher.lastName}
+                    </span>
+                    {viewableTeachers.includes(teacher) ? (
+                      <button
+                        className="p-2 rounded-2xl text-center hover:bg-neutral-200 transition-all"
+                        onClick={() => removeTeacherHandler(teacher.id)}
+                      >
+                        Remove
+                      </button>
+                    ) : (
+                      <button
+                        className="p-2 rounded-2xl text-center hover:bg-neutral-200 transition-all"
+                        onClick={() => addTeacherHandler(teacher.id)}
+                      >
+                        Add
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };

@@ -117,7 +117,7 @@ const MindMap = ({ assignments }) => {
           <div>{assignment.name}</div>
         ))}
       </div> */}
-      <div className="h-[500px] bg-neutral-100 p-2 rounded-xl">
+      <div className="h-[500px] bg-white p-2 rounded-xl">
         <ReactFlow
           nodes={nodes}
           edges={edges}

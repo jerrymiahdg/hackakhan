@@ -124,7 +124,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="h-full">
       {showMessage && (
         <div className="absolute top-0 left-0 w-full h-screen flex items-center justify-center bg-[rgba(0,0,0,.5)]">
           <div className="w-1/2 h-1/3 bg-black text-red-500 rounded-2xl flex flex-col items-center justify-center gap-10">

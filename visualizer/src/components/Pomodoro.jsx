@@ -17,7 +17,7 @@ const Pomodoro = ({ assignments }) => {
           <h1 className="font-bold">Select an assignment to focus on.</h1>
           {assignments.map((el) => (
             <button
-              className="bg-neutral-100 rounded-xl p-2"
+              className="bg-neutral-200 rounded-xl p-2"
               onClick={selectAssignment(el.id)}
             >
               <h1 key={el.id}>{el.name}</h1>
