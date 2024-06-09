@@ -100,9 +100,9 @@ const Teacher = ({ userDocRef, uid }) => {
       <div className="flex flex-col items-center p-10 gap-5 w-full">
         <h1 className="font-bold text-7xl">Visualize</h1>
 
-        {/* <div className="text-3xl">
-          Hello, {userDocRef.current.firstName} {userDocRef.current.lastName}!
-        </div> */}
+        {userDocRef.current != null && (
+          <div className="text-3xl">Hello, {userDocRef.current.firstName}!</div>
+        )}
 
         <h1 className="font-bold text-2xl w-full text-left">
           Your Assignments

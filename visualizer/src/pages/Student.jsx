@@ -163,6 +163,9 @@ const Student = ({ userDocRef, uid }) => {
     <>
       <div className="flex flex-col gap-10 p-5" ref={thing}>
         <h1 className="text-left font-bold text-7xl">Visualize</h1>
+        {userDocRef.current != null && (
+          <div className="text-3xl">Hello, {userDocRef.current.firstName}!</div>
+        )}
         <div className="flex flex-col lg:flex-row justify-between gap-5">
           <div className="bg-neutral-100 p-5 rounded-3xl flex flex-col gap-5">
             <div className="pb-3">

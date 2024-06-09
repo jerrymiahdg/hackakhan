@@ -19,7 +19,7 @@ const Launcher = ({ setLearning }) => {
 
   const enterHandler = () => {
     setLearning(true);
-    // openFullscreen();
+    openFullscreen();
     // uncomment this for the actual app
     navigate("/student");
   };
