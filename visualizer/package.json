@@ -10,11 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "classcat": "^5.0.5",
     "firebase": "^10.12.2",
     "lucide-react": "^0.390.0",
+    "nanoid": "^5.0.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "react-timer-hook": "^3.0.7",
+    "reactflow": "^11.11.3",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

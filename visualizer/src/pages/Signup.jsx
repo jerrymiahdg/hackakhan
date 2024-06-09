@@ -28,6 +28,7 @@ const SignUp = () => {
           lastName: e.target[1].value,
           email: e.target[2].value,
           isStudent: isStudent,
+          students: [],
         })
           .then(() => {
             navigate("/student");
@@ -46,7 +47,7 @@ const SignUp = () => {
     <div className="w-full h-screen flex justify-center items-center">
       <form
         onSubmit={submitHandler}
-        className="border border-black rounded-2xl p-10 w-1/2 flex flex-col items-center gap-10"
+        className="border border-black rounded-2xl p-5 max-w-xl w-full flex flex-col items-center gap-10"
       >
         <h1 className="text-left font-bold text-7xl">Visualize</h1>
         <input
@@ -69,16 +70,21 @@ const SignUp = () => {
           placeholder="password"
           type="password"
         ></input>
-        <button
-          className="p-5 border border-black rounded-xl w-full"
-          onClick={(e) => {
-            e.preventDefault();
-            setIsStudent(!isStudent);
-          }}
-        >
-          I am a {isStudent ? "Student" : "Teacher"}
+        <div className="rounded-xl w-full transition-all text-center">
+          I am a{" "}
+          <button
+            className="border p-2 rounded-lg hover:bg-neutral-200 transition-all"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsStudent((state) => !state);
+            }}
+          >
+            {isStudent ? "Student" : "Teacher"}
+          </button>
+        </div>
+        <button className="p-5 rounded-xl w-full border border-black hover:bg-neutral-200 transition-all">
+          Sign up
         </button>
-        <button className="bg-neutral-400 p-5 rounded-xl w-full">Login</button>
         <p>
           Already a user? <Link to="/login">Log in!</Link>
         </p>

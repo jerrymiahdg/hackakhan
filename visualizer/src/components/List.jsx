@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const List = ({ assignments }) => {
-  const [listAssignments, setListAssignments] = useState(
-    assignments.map((el, i) => {
-      return { name: el, id: i };
-    })
-  );
+  const [listAssignments, setListAssignments] = useState(assignments);
+
+  useEffect(() => {
+    setListAssignments(assignments);
+  }, [assignments]);
 
   const removeAssignment = (i) => () =>
     setListAssignments((prev) => {
@@ -14,19 +14,21 @@ const List = ({ assignments }) => {
 
   return (
     <div className=" flex flex-col gap-5">
-      {listAssignments.map((el) => (
+      {listAssignments.map((el, i) => (
         <div
           className="w-full bg-neutral-200 p-5 rounded-2xl flex flex-col gap-5"
-          key={el.id}
+          key={i}
         >
           <h1 className="font-bold">{el.name}</h1>
-          <h1 className="">Description</h1>
-          <button
-            className="text-left text-red-500 underline"
-            onClick={removeAssignment(el.id)}
-          >
-            Done
-          </button>
+          <div className="flex gap-5">
+            <h1 className="w-full">{el.desc}</h1>
+            <button
+              className="p-2 border border-black rounded-2xl text-center hover:bg-neutral-300 transition-all"
+              onClick={removeAssignment(el.id)}
+            >
+              Done
+            </button>
+          </div>
         </div>
       ))}
       {listAssignments.length > 0 || <h1>Completed all assignments!</h1>}

@@ -18,10 +18,10 @@ const Login = () => {
     );
   };
   return (
-    <div className="w-full h-screen flex justify-center items-center">
+    <div className="w-full h-screen flex justify-center items-center p-5">
       <form
         onSubmit={submitHandler}
-        className="border border-black rounded-2xl p-10 w-1/2 flex flex-col items-center gap-10"
+        className="border border-black w-full rounded-2xl p-5 max-w-xl flex flex-col items-center gap-10"
       >
         <h1 className="text-left font-bold text-7xl">Visualize</h1>
         <input
@@ -34,7 +34,9 @@ const Login = () => {
           placeholder="password"
           type="password"
         ></input>
-        <button className="bg-neutral-400 p-5 rounded-xl w-full">Login</button>
+        <button className="p-5 rounded-xl w-full border border-black hover:bg-neutral-200 transition-all">
+          Login
+        </button>
         <p>
           Not a user? <Link to="/signup">Sign up!</Link>
         </p>

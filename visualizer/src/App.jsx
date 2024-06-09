@@ -17,6 +17,9 @@ function App() {
   const el = document.documentElement;
   const navigate = useNavigate();
   const location = useLocation();
+  const pathRef = useRef();
+  const [checkedLogin, setCheckedLogin] = useState(false);
+  const [learning, setLearning] = useState(false);
 
   const openFullscreen = () => {
     if (el.requestFullscreen) {
@@ -44,35 +47,66 @@ function App() {
   };
 
   const uid = useRef(null);
-  const userDocRef = useRef(null);
+  // const userDocRef = useRef(null);
+  const userDoc = useRef(null);
+  const [state, setState] = useState(null);
 
   useEffect(() => {
+    console.log("skibidi");
     document.addEventListener("keydown", onKeyDown);
     onAuthStateChanged(auth, (user) => {
+      if (!checkedLogin) setCheckedLogin(true);
+      console.log(user);
       if (user) {
         console.log("logged in!!!");
         uid.current = user.uid;
+        setShowMessage();
         console.log(uid.current);
         const checkUser = onSnapshot(
           doc(db, "users", uid.current),
           (docSnap) => {
-            userDocRef.current = docSnap.data();
-            if (docSnap.data().isStudent) navigate("/student");
+            userDoc.current = docSnap.data();
+            setState(docSnap.data());
+            console.log(state);
+            console.log(userDoc.current);
+            console.log(docSnap.data());
+            if (userDoc.current.isStudent)
+              navigate(learning ? "/student" : "/");
             else navigate("/teacher");
           }
         );
       } else {
-        console.log(
-          "NOT LOGGED IN!!! SEND THIS FELLA BACK TO WHERE HE CAME FROM!!!!!!"
-        );
-        navigate("/login");
+        userDoc.current = null;
+        console.log(location.pathname);
+        if (location.pathname !== "/login" && location.pathname !== "/signup") {
+          navigate("/login");
+        }
       }
     });
   }, []);
 
+  useEffect(() => {
+    if (userDoc.current) {
+      if (userDoc.current.isStudent) navigate(learning ? "/student" : "/");
+      else navigate("/teacher");
+    } else {
+      if (
+        location.pathname !== "/login" &&
+        location.pathname !== "/signup" &&
+        checkedLogin
+      ) {
+        navigate("/login");
+      }
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    console.log(location);
+    pathRef.current = location.pathname;
+  }, [location]);
+
   const onKeyDown = (e) => {
-    console.log(location, "/");
-    if (e.key == "Escape" && location.pathname != "/") {
+    if (e.key == "Escape" && pathRef.current != "/") {
       setShowMessage(true);
     }
   };
@@ -86,16 +120,7 @@ function App() {
     navigate("/");
     setShowMessage(false);
     closeFullscreen();
-  };
-
-  const logoutHandler = () => {
-    signOut(auth)
-      .then(() => {
-        console.log("logged out");
-      })
-      .catch((error) => {
-        console.log;
-      });
+    setLearning(false);
   };
 
   return (
@@ -124,13 +149,18 @@ function App() {
         </div>
       )}
       <Routes>
-        <Route path="/" element={<Launcher />} />
-        <Route path="/student" element={<Student userDocRef={userDocRef} />} />
-        <Route path="/teacher" element={<Teacher userDocRef={userDocRef} />} />
+        <Route path="/" element={<Launcher setLearning={setLearning} />} />
+        <Route
+          path="/student"
+          element={<Student userDocRef={userDoc} uid={uid} />}
+        />
+        <Route
+          path="/teacher"
+          element={<Teacher userDocRef={userDoc} uid={uid} />}
+        />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
       </Routes>
-      <button onClick={logoutHandler}>Log out</button>
     </div>
   );
 }
